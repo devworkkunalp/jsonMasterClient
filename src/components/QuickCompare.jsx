@@ -61,7 +61,7 @@ export default function QuickCompare() {
                 formData.append('files', file2)
                 formData.append('keyField', keyField)
                 
-                const response = await fetch('http://localhost:5007/api/compare/smart', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/compare/smart`, {
                     method: 'POST',
                     body: formData,
                 })
@@ -78,7 +78,7 @@ export default function QuickCompare() {
                 formData.append('json1', json1)
                 formData.append('json2', json2)
                 
-                const response = await fetch('http://localhost:5007/api/compare', {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/api/compare`, {
                     method: 'POST',
                     body: formData,
                 })

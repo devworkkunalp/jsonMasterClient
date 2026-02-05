@@ -52,7 +52,7 @@ export default function TextDiff() {
         formData.append('pageSize', pageSize.toString())
 
         try {
-            const response = await fetch('http://localhost:5007/api/compare/text', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/compare/text`, {
                 method: 'POST',
                 body: formData,
             })

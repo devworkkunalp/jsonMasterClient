@@ -42,7 +42,7 @@ export default function SmartCompare() {
         formData.append('ignoredFields', ignoredFields)
 
         try {
-            const response = await fetch('http://localhost:5007/api/compare/smart', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/compare/smart`, {
                 method: 'POST',
                 body: formData,
             })
