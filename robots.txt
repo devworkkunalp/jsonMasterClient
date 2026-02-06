@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://json-master-client.vercel.app/sitemap.xml
