@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Home } from 'lucide-react'
 import FormatJson from './components/FormatJson'
 import QuickCompare from './components/QuickCompare'
@@ -8,6 +8,35 @@ import LandingPage from './components/LandingPage'
 
 function App() {
   const [activeTab, setActiveTab] = useState('home')
+
+  // Automatic Cache Busting / Auto-Update Logic
+  useEffect(() => {
+    const checkVersion = async () => {
+      // Don't check during local development
+      if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') return;
+
+      try {
+        const response = await fetch(`${import.meta.env.BASE_URL}version.json?t=${Date.now()}`, {
+          cache: 'no-store'
+        });
+        const data = await response.json();
+        const serverTimestamp = data.timestamp;
+        const localTimestamp = localStorage.getItem('jsonmaster_version');
+
+        if (localTimestamp && serverTimestamp && String(serverTimestamp) !== String(localTimestamp)) {
+          console.log('New version detected, reloading...');
+          localStorage.setItem('jsonmaster_version', serverTimestamp);
+          window.location.reload(true);
+        } else if (serverTimestamp) {
+          localStorage.setItem('jsonmaster_version', serverTimestamp);
+        }
+      } catch (err) {
+        console.error('Failed to check version:', err);
+      }
+    };
+
+    checkVersion();
+  }, [])
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col bg-gray-900 text-white">

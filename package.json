@@ -6,7 +6,7 @@
   "homepage": "https://devworkkunalp.github.io/jsonMasterClient/",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && echo {\\\"version\\\": \\\"0.0.0\\\", \\\"timestamp\\\": $(powershell -Command \"[Math]::Floor([decimal]([DateTimeOffset]::Now.ToUnixTimeMilliseconds()))\")} > dist/version.json",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
