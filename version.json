@@ -1,1 +1,4 @@
-{\"version\": \"0.0.0\", \"timestamp\": $(powershell -Command "[Math]::Floor([decimal]([DateTimeOffset]::Now.ToUnixTimeMilliseconds()))")} 
+{
+  "version": "0.0.0",
+  "timestamp": 1770387742697
+}
