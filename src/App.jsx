@@ -28,7 +28,13 @@ function App() {
           cache: 'no-store'
         });
         
-        if (!response.ok) return; // Silent skip if file doesn't exist or server error
+        if (!response.ok) return; 
+        
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          return; // Ignore if not JSON (e.g. 404 HTML page)
+        }
+
         const data = await response.json();
         const serverTimestamp = data.timestamp;
         const localTimestamp = localStorage.getItem('jsonmaster_version');
