@@ -13,8 +13,26 @@ self.onmessage = async (e) => {
         const sourceText = await file1.text();
         const targetText = await file2.text();
         
-        const source = JSON.parse(sourceText);
-        const target = JSON.parse(targetText);
+        let source = JSON.parse(sourceText);
+        let target = JSON.parse(targetText);
+
+        // Auto-detect array if wrapped in an object
+        const findArray = (obj) => {
+            if (Array.isArray(obj)) return obj;
+            if (obj && typeof obj === 'object') {
+                for (const key in obj) {
+                    if (Array.isArray(obj[key])) return obj[key];
+                }
+            }
+            return null;
+        };
+
+        const sourceArray = findArray(source);
+        const targetArray = findArray(target);
+
+        if (!sourceArray || !targetArray) {
+            throw new Error("Could not find an array of items to compare in one or both files.");
+        }
 
         const result = {
             modified: [],
@@ -33,8 +51,8 @@ self.onmessage = async (e) => {
         self.postMessage({ type: 'PROGRESS', message: 'Comparing records...' });
 
         // Group by keyField
-        const sourceGroups = groupBy(source, keyField);
-        const targetGroups = groupBy(target, keyField);
+        const sourceGroups = groupBy(sourceArray, keyField);
+        const targetGroups = groupBy(targetArray, keyField);
 
         const allKeys = new Set([...Object.keys(sourceGroups), ...Object.keys(targetGroups)]);
         result.summary.totalRecords = allKeys.size;

@@ -128,17 +128,30 @@ export default function SmartCompare() {
             summary: result.summary,
             sourceFile: file1?.name,
             targetFile: file2?.name,
+            keyField: keyField,
             generatedAt: new Date().toLocaleString(),
-            // Simplified changes list for user readability
-            changes: filteredRecords.map(item => ({
-                status: item.type.toUpperCase(),
-                key: item.keyValue || 'N/A',
-                label: item.label,
-                // Only include diffs if modified, otherwise full item if added/removed might be too big but let's include it for "smartness"
-                // Actually user said "simple show the comparison". Let's keep it metadata heavy.
-                sourceSnippet: item.source,
-                targetSnippet: item.target
-            }))
+            // Only export differences for modified, and key for all
+            changes: filteredRecords.map(item => {
+                const base = {
+                    status: item.type.toUpperCase(),
+                    [keyField]: item.keyValue || 'N/A'
+                };
+
+                if (item.type === 'modified') {
+                    return {
+                        ...base,
+                        differences: item.differences?.map(d => ({
+                            path: d.path,
+                            sourceValue: d.sourceValue,
+                            targetValue: d.targetValue
+                        }))
+                    };
+                } else if (item.type === 'added') {
+                    return { ...base, message: 'New record added to target file.' };
+                } else {
+                    return { ...base, message: 'Record removed from target file.' };
+                }
+            })
         }
 
         const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' })
