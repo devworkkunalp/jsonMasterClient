@@ -24,8 +24,9 @@ export default function SmartCompare() {
     }, [result, filter, searchTerm])
 
     // ... existing handleCompare ...
+    const [loadingMessage, setLoadingMessage] = useState('')
+
     const handleCompare = async () => {
-        // ... (keep exact existing logic)
         if (!file1 || !file2) {
             setError('Please select both files')
             return
@@ -34,34 +35,48 @@ export default function SmartCompare() {
         setLoading(true)
         setError(null)
         setResult(null)
-
-        const formData = new FormData()
-        formData.append('files', file1)
-        formData.append('files', file2)
-        formData.append('keyField', keyField)
-        formData.append('ignoredFields', ignoredFields)
+        setLoadingMessage('Initializing worker...')
 
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/compare/smart`, {
-                method: 'POST',
-                body: formData,
-            })
+            const worker = new Worker(new URL('../utils/compare.worker.js', import.meta.url), { type: 'module' });
 
-            const data = await response.json()
+            worker.onmessage = (e) => {
+                const { type, result, message, error } = e.data;
+                if (type === 'PROGRESS') {
+                    setLoadingMessage(message);
+                } else if (type === 'COMPLETE') {
+                    setResult(result);
+                    setLoading(false);
+                    setLoadingMessage('');
+                    worker.terminate();
+                } else if (type === 'ERROR') {
+                    setError(`Worker Error: ${error}`);
+                    setLoading(false);
+                    setLoadingMessage('');
+                    worker.terminate();
+                }
+            };
 
-            if (!response.ok) {
-                setError(data.error || 'Comparison failed')
-                setLoading(false)
-                return
-            }
+            worker.onerror = (err) => {
+                console.error('Worker error:', err);
+                setError(`Worker caught error: ${err.message}`);
+                setLoading(false);
+                setLoadingMessage('');
+                worker.terminate();
+            };
 
-            setResult(data)
-            setLoading(false)
-            // selectedIndex reset handled by useEffect
+            worker.postMessage({
+                file1,
+                file2,
+                keyField,
+                ignoredFields
+            });
+
         } catch (err) {
             console.error(err)
             setError(`Error: ${err.message}`)
             setLoading(false)
+            setLoadingMessage('')
         }
     }
 
@@ -197,9 +212,9 @@ export default function SmartCompare() {
                             <button
                                 onClick={handleCompare}
                                 disabled={!file1 || !file2 || loading}
-                                className="bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white px-6 py-2 rounded font-medium transition-colors h-[42px]"
+                                className="bg-blue-600 hover:bg-blue-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-white px-6 py-2 rounded font-medium transition-colors h-[42px] min-w-[140px]"
                             >
-                                {loading ? 'Analyzing...' : 'Compare JSON'}
+                                {loading ? (loadingMessage || 'Analyzing...') : 'Compare JSON'}
                             </button>
                         </div>
                     </>
