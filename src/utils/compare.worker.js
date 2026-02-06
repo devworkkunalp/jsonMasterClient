@@ -16,23 +16,34 @@ self.onmessage = async (e) => {
         let source = JSON.parse(sourceText);
         let target = JSON.parse(targetText);
 
-        // Auto-detect array if wrapped in an object
-        const findArray = (obj) => {
+        // Auto-detect array if wrapped in an object - pick the largest array found
+        const findLargestArray = (obj) => {
             if (Array.isArray(obj)) return obj;
             if (obj && typeof obj === 'object') {
+                let largest = null;
                 for (const key in obj) {
-                    if (Array.isArray(obj[key])) return obj[key];
+                    if (Array.isArray(obj[key])) {
+                        if (!largest || obj[key].length > largest.length) {
+                            largest = obj[key];
+                        }
+                    }
                 }
+                return largest;
             }
             return null;
         };
 
-        const sourceArray = findArray(source);
-        const targetArray = findArray(target);
+        const sourceArray = findLargestArray(source);
+        const targetArray = findLargestArray(target);
 
         if (!sourceArray || !targetArray) {
-            throw new Error("Could not find an array of items to compare in one or both files.");
+            throw new Error("Could not find an array of items to compare. Ensure your JSON contains a list of objects.");
         }
+
+        self.postMessage({ 
+            type: 'PROGRESS', 
+            message: `Found ${sourceArray.length} items in source and ${targetArray.length} in target. Starting comparison...` 
+        });
 
         const result = {
             modified: [],
