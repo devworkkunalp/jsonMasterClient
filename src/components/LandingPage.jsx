@@ -7,125 +7,133 @@ export default function LandingPage({ onNavigate }) {
         {
             id: 'smart',
             title: "Smart Compare",
-            icon: <FileDiff size={32} className="text-purple-400" />,
-            desc: "Deep semantic comparison for structured JSON files.",
-            whenToUse: [
-                "Comparing large configuration files",
-                "Analyzing complex nested structures",
-                "Need to match items by ID (e.g. WorkOrders)"
-            ],
-            color: "border-purple-500/30 hover:border-purple-500"
+            icon: <FileDiff size={28} className="text-purple-600" />,
+            desc: "Semantic object-level comparison for structured data.",
+            bestFor: "Complex configs, nested lists, ID-matching",
+            badge: "PRO TOOL",
+            color: "border-purple-500/20 hover:border-purple-500"
         },
         {
             id: 'quick',
             title: "Quick Compare",
-            icon: <Zap size={32} className="text-yellow-400" />,
-            desc: "Instant split-pane comparison for snippets.",
-            whenToUse: [
-                "Copy-pasting small JSON blocks",
-                "Comparing API responses on the fly",
-                "Don't want to save files to disk"
-            ],
-            color: "border-yellow-500/30 hover:border-yellow-500"
+            icon: <Zap size={28} className="text-orange-600" />,
+            desc: "Instant side-by-side diffing for snippets and notes.",
+            bestFor: "API responses, quick fixes, temporary snippets",
+            badge: "FASTEST",
+            color: "border-yellow-500/20 hover:border-yellow-500"
         },
         {
             id: 'text',
             title: "Text Diff",
-            icon: <FileText size={32} className="text-blue-400" />,
-            desc: "Classic line-by-line text difference viewer.",
-            whenToUse: [
-                "Non-JSON files (XML, YAML, TXT)",
-                "Checking whitespace or formatting changes",
-                "Simple structure-agnostic diffs"
-            ],
-            color: "border-blue-500/30 hover:border-blue-500"
+            icon: <FileText size={28} className="text-blue-600" />,
+            desc: "Standard line-by-line comparison for any file type.",
+            bestFor: "Logs, TXT/XML/YAML, format-agnostic diffs",
+            badge: "CLASSIC",
+            color: "border-blue-500/20 hover:border-blue-500"
         },
         {
             id: 'format',
             title: "Format JSON",
-            icon: <FileJson size={32} className="text-green-400" />,
-            desc: "Clean, validate, and beautify messy JSON.",
-            whenToUse: [
-                "Validating raw API payloads",
-                "Beautifying minified JSON",
-                "Checking for syntax errors"
-            ],
-            color: "border-green-500/30 hover:border-green-500"
+            icon: <FileJson size={28} className="text-green-600" />,
+            desc: "Validate and beautify messy or minified JSON data.",
+            bestFor: "Beautifying payloads, syntax checking",
+            badge: "UTILITY",
+            color: "border-green-500/20 hover:border-green-500"
         }
     ]
 
     return (
-        <div className="h-full flex flex-col items-center bg-gray-900 p-4 md:p-8 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
-            {/* Hero Section */}
-            <div className="text-center mb-8 shrink-0 animate-fade-in-down pt-4">
-                <h1 className="text-3xl md:text-5xl font-extrabold bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent mb-4 filter drop-shadow-lg">
-                    Process 100MB+ Files Instantly
+        <div className="h-full flex flex-col items-center p-4 md:p-8 overflow-y-auto relative no-scrollbar [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none']">
+            {/* Hero Section - COMPACT */}
+            <div className="text-center mb-10 shrink-0 animate-float pt-4">
+                <div className="inline-block px-3 py-1 rounded-full bg-blue-500/5 border border-blue-500/10 text-blue-600 text-[9px] font-black uppercase tracking-[0.3em] mb-4 animate-pulse-soft">
+                    Now Supporting 100MB+ Files Locally
+                </div>
+                <h1 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4 tracking-tighter leading-tight transition-colors">
+                    Precision Comparison.<br/>
+                    <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Zero Latency.</span>
                 </h1>
-                <p className="text-base md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                    The ultimate developer toolkit to <span className="text-blue-400 font-semibold">compare</span>, <span className="text-purple-400 font-semibold">validate</span>, and <span className="text-pink-400 font-semibold">analyze</span> massive JSON datasets without lag.
+                <p className="text-sm md:text-base text-slate-500 max-w-xl mx-auto leading-relaxed font-bold transition-colors">
+                    The ultra-fast, privacy-first JSON toolkit designed for <span className="text-blue-600">massive datasets</span> and high-stakes debugging.
                 </p>
             </div>
 
-            {/* AI Cost Warning Banner - Moved to Top */}
-            <div className="w-full max-w-4xl shrink-0 mb-12 animate-fade-in-up">
-                <div className="bg-gradient-to-r from-red-900/20 to-orange-900/20 border border-red-500/30 rounded-xl p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 md:gap-8 hover:border-red-500/50 transition-colors shadow-lg shadow-red-900/10">
-                    <div className="flex items-center gap-4">
-                        <div className="bg-red-500/10 p-3 rounded-full hidden md:block">
-                            <Zap size={24} className="text-red-400" />
+            {/* AI Cost Warning Banner - Refined & Compact */}
+            <div className="w-full shrink-0 mb-12 px-0 md:px-4 max-w-6xl">
+                <div className="md:glass-card md:rounded-2xl bg-white border-y md:border border-red-500/10 hover:border-red-500/40 transition-all group overflow-hidden relative shadow-sm hover:shadow-xl flex flex-col md:flex-row items-center justify-between">
+                    <div className="absolute inset-0 bg-red-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
+                    {/* Desktop Layout */}
+                    <div className="hidden md:flex items-center gap-5 p-6 relative z-10 w-full justify-between">
+                        <div className="flex items-center gap-5">
+                            <div className="bg-red-500/10 p-3 rounded-xl ring-1 ring-red-500/20 group-hover:scale-110 transition-transform shadow-inner">
+                                <Zap size={24} className="text-red-500" />
+                            </div>
+                            <div>
+                                <h4 className="text-lg font-bold text-slate-900 mb-0.5 transition-colors">Stop Wasting LLM Tokens</h4>
+                                <p className="text-[11px] text-slate-500 max-w-lg leading-relaxed font-bold italic transition-colors">
+                                    "JsonMaster runs entirely in your browser. 
+                                    <span className="text-blue-600"> 100x faster than a chat window.</span>"
+                                </p>
+                            </div>
                         </div>
-                        <div>
-                            <h4 className="text-lg font-bold text-red-200 mb-1">Stop Burning Tokens on simple diffs!</h4>
-                            <p className="text-sm text-gray-400">
-                                AI models charge by the token. Pasting a 50MB JSON into a chat window? <span className="text-white font-semibold underline decoration-red-500/50">That's expensive.</span>
-                            </p>
+                        <div className="shrink-0 text-right">
+                            <div className="text-[9px] text-slate-400 uppercase tracking-[0.4em] mb-1 font-black">Architecture</div>
+                            <div className="text-2xl font-black text-green-600 tracking-tighter">SERVERLESS</div>
                         </div>
                     </div>
-                    <div className="text-right md:text-left shrink-0 border-l border-red-500/20 pl-6 hidden md:block">
-                        <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Local Processing</div>
-                        <div className="text-2xl font-bold text-green-400">FREE & FAST</div>
+
+                    {/* Mobile Marquee Layout */}
+                    <div className="md:hidden w-full py-4 relative z-10 marquee-container overflow-hidden">
+                        <div className="flex animate-marquee whitespace-nowrap items-center gap-12">
+                            <span className="flex items-center gap-4 text-xs font-black uppercase tracking-widest text-slate-700">
+                                <Zap size={14} className="text-red-500" /> Stop Wasting LLM Tokens — JsonMaster runs entirely in your browser. 100x faster than a chat window. 
+                                <span className="text-green-600 ml-4">• ARCHITECTURE: SERVERLESS</span>
+                            </span>
+                            <span className="flex items-center gap-4 text-xs font-black uppercase tracking-widest text-slate-700">
+                                <Zap size={14} className="text-red-500" /> Stop Wasting LLM Tokens — JsonMaster runs entirely in your browser. 100x faster than a chat window. 
+                                <span className="text-green-600 ml-4">• ARCHITECTURE: SERVERLESS</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            {/* Feature Grid */}
-            <div className="w-full max-w-5xl grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 shrink-0">
+            {/* Feature Grid - Enhanced Clarity */}
+            <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16 shrink-0 px-4">
                 {features.map(f => (
                     <button
                         key={f.id}
                         onClick={() => onNavigate(f.id)}
-                        className={`group relative bg-gray-800/40 backdrop-blur-md p-6 rounded-xl border ${f.color} transition-all duration-300 hover:bg-gray-800 hover:scale-[1.01] text-left hover:shadow-2xl hover:shadow-purple-900/10 flex flex-col h-full`}
+                        className={`group relative glass-card p-6 rounded-2xl transition-all duration-500 hover:-translate-y-2 hover:bg-white text-left hover:shadow-2xl flex-col h-[340px] ${f.id === 'quick' ? 'hidden md:flex' : 'flex'}`}
                     >
-                        <div className="flex justify-between items-start mb-3">
-                            <div className="p-2.5 bg-gray-900/80 rounded-lg ring-1 ring-white/10">
+                        <div className="flex justify-between items-start mb-6">
+                            <div className="p-3 bg-slate-100 rounded-xl ring-1 ring-slate-200 group-hover:glow-blue transition-all duration-500 shadow-sm">
                                 {f.icon}
                             </div>
-                            <span className="text-gray-500 group-hover:text-white transition-transform duration-300 group-hover:translate-x-1">
-                                <ArrowRight size={20} />
-                            </span>
+                            <div className="flex flex-col items-end gap-2">
+                                <span className="text-[8px] font-black px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 border border-blue-500/20 transition-colors uppercase tracking-widest">{f.badge}</span>
+                                <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-blue-600 group-hover:text-white transition-all transform group-hover:rotate-45">
+                                    <ArrowRight size={16} />
+                                </div>
+                            </div>
                         </div>
                         
-                        <h3 className="text-xl font-bold text-white mb-1 tracking-tight">{f.title}</h3>
-                        <p className="text-sm text-gray-400 mb-4 font-medium">{f.desc}</p>
+                        <h3 className="text-lg font-bold text-slate-900 mb-2 tracking-tight group-hover:text-blue-600 transition-all">{f.title}</h3>
+                        <p className="text-[11px] text-slate-500 mb-6 font-medium leading-relaxed line-clamp-2 transition-colors">{f.desc}</p>
                         
-                        <div className="mt-auto bg-gray-900/50 rounded-lg p-3 border border-white/5">
-                            <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 block">Best Used For:</span>
-                            <ul className="space-y-1.5">
-                                {f.whenToUse.map((item, i) => (
-                                    <li key={i} className="flex items-center text-xs text-gray-400 group-hover:text-gray-300">
-                                        <CheckCircle2 size={12} className="mr-2 text-gray-600 group-hover:text-blue-400 transition-colors shrink-0" />
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
+                        <div className="mt-auto rounded-xl p-5 bg-blue-50/50 border border-blue-100 group-hover:border-blue-500/30 transition-all">
+                            <span className="text-[10px] font-black text-blue-600/60 uppercase tracking-[0.2em] mb-2 block">Best for</span>
+                            <p className="text-[11px] font-bold text-slate-800 leading-snug transition-colors">
+                                {f.bestFor}
+                            </p>
                         </div>
                     </button>
                 ))}
             </div>
 
-
-            
-            <footer className="mt-8 text-gray-600 text-xs shrink-0 font-medium">
-                JsonMaster v2.0 • Zero Cloud Uploads • 100% Privacy
+            <footer className="mt-auto pb-8 text-slate-300 text-[10px] font-black uppercase tracking-[0.5em] transition-colors">
+                Engineered for Performance • v2.1.0
             </footer>
         </div>
     )

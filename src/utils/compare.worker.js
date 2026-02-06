@@ -33,17 +33,21 @@ self.onmessage = async (e) => {
             return null;
         };
 
-        const sourceArray = findLargestArray(source);
-        const targetArray = findLargestArray(target);
+        const sourceArrayRaw = findLargestArray(source);
+        const targetArrayRaw = findLargestArray(target);
 
-        if (!sourceArray || !targetArray) {
+        if (!sourceArrayRaw || !targetArrayRaw) {
             throw new Error("Could not find an array of items to compare. Ensure your JSON contains a list of objects.");
         }
 
         self.postMessage({ 
             type: 'PROGRESS', 
-            message: `Found ${sourceArray.length} items in source and ${targetArray.length} in target. Starting comparison...` 
+            message: `Found ${sourceArrayRaw.length} items in source and ${targetArrayRaw.length} in target. Processing exclusions...` 
         });
+
+        // Strip ignored fields (except keyField) to ensure they don't show up in visual diff
+        const sourceArray = sourceArrayRaw.map(item => stripIgnoredFields(item, ignoredSet, keyField));
+        const targetArray = targetArrayRaw.map(item => stripIgnoredFields(item, ignoredSet, keyField));
 
         const result = {
             modified: [],
@@ -109,6 +113,23 @@ self.onmessage = async (e) => {
         self.postMessage({ type: 'ERROR', error: error.message });
     }
 };
+
+function stripIgnoredFields(obj, ignoredSet, keyField) {
+    if (obj === null || typeof obj !== 'object') return obj;
+    
+    if (Array.isArray(obj)) {
+        return obj.map(item => stripIgnoredFields(item, ignoredSet, keyField));
+    }
+
+    const newObj = {};
+    for (const key in obj) {
+        // Always preserve the key field used for correlation
+        if (key === keyField || !ignoredSet.has(key.toLowerCase())) {
+            newObj[key] = stripIgnoredFields(obj[key], ignoredSet, keyField);
+        }
+    }
+    return newObj;
+}
 
 function groupBy(array, key) {
     if (!Array.isArray(array)) return {};
