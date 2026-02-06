@@ -30,13 +30,22 @@ export default function QuickCompare() {
         setTextDiffs([])
         setLoadingMessage('Initializing...')
 
-        const prepareJson = (text) => {
-            try { JSON.parse(text); return text; } 
-            catch {
-                try { const wrapped = `{${text}}`; JSON.parse(wrapped); return wrapped; } 
-                catch { return text; }
-            }
+const prepareJson = (text) => {
+    if (!text) return text;
+    try { 
+        JSON.parse(text); 
+        return text; 
+    } catch {
+        // Try wrapping in braces if it's a property list
+        try { 
+            const wrapped = `{${text}}`; 
+            JSON.parse(wrapped); 
+            return wrapped; 
+        } catch { 
+            return text; 
         }
+    }
+}
 
         try {
             if (mode === 'smart') {

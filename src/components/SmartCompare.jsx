@@ -1,10 +1,7 @@
-
-// ... imports
 import { useState, useMemo, useEffect } from 'react'
 import { DiffEditor } from '@monaco-editor/react'
 
 export default function SmartCompare() {
-    // ... existing state
     const [file1, setFile1] = useState(null)
     const [file2, setFile2] = useState(null)
     const [keyField, setKeyField] = useState('workOrderId') 
@@ -23,7 +20,6 @@ export default function SmartCompare() {
         setSelectedIndex(0)
     }, [result, filter, searchTerm])
 
-    // ... existing handleCompare ...
     const [loadingMessage, setLoadingMessage] = useState('')
 
     const handleCompare = async () => {
@@ -80,7 +76,6 @@ export default function SmartCompare() {
         }
     }
 
-    // ... existing filteredRecords memo ...
     const filteredRecords = useMemo(() => {
         if (!result) return []
 
@@ -117,7 +112,6 @@ export default function SmartCompare() {
 
     const currentRecord = filteredRecords[selectedIndex]
 
-    // ... existing json stringify ...
     const originalJson = currentRecord?.source ? JSON.stringify(currentRecord.source, null, 2) : ''
     const modifiedJson = currentRecord?.target ? JSON.stringify(currentRecord.target, null, 2) : ''
 
@@ -171,7 +165,6 @@ export default function SmartCompare() {
 
     return (
         <div className="h-full flex flex-col bg-gray-900">
-             {/* ... Header Section (keep exactly same) ... */}
             <div className="bg-gray-800/50 backdrop-blur-sm border-b border-gray-700 p-4 shrink-0 transition-all duration-300">
                 {!isCompactMode ? (
                     // FULL HEADER (Initial)
